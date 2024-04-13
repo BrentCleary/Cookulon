@@ -2,6 +2,7 @@
 @using Cookulon.Shared
 @using Microsoft.AspNetCore.Components.Forms;
 @using System.ComponentModel.DataAnnotations;
+@inject NavigationManager navigationManager
 
 
 <PageTitle>AI Chef - Create Meal</PageTitle>
@@ -54,7 +55,9 @@
                                             @item.Description
                                         </td>
                                         <td class="text-end pe-3">
-                                            <button class="btn btn-outline-danger"><i class="bi bi-trash-fill"@*  @onclick="RemoveIngredient(item.Id) *@"></i></button>
+                                        <button class="btn btn-outline-danger" @onclick="() => RemoveIngredient(item.Id)"><i class=" bi bi-trash-fill"></i>
+
+                                </button>
                                         </td>
                                     </tr>
                                 }
@@ -63,7 +66,8 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <button class="btn btn-success rounded">Generate</button>
+
+                    <button class="btn btn-success rounded" onclick="HandleSubmit">Generate</button>
                 </div>
 
             </EditForm>
@@ -112,9 +116,13 @@
         ingredients.Clear();
     }
 
-    // private void RemoveIngredient(Guid Id)
-    // {
-    //     Ingredient? oneIngredient = ingredients.FirstOrDefault(i => i.Id == Id);
-    //     ingredients.Remove(oneIngredient);
-    // }
+    private void RemoveIngredient(Guid id)
+    {
+        ingredients.Remove(ingredients.First(i => i.Id == id));
+    }
+
+    private void HandleSubmit()
+    {
+        navigationManager.NavigateTo("/mealIdeas");
+    }
 }
