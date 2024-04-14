@@ -1,6 +1,10 @@
 ﻿@page "/mealIdeas"
+
 @using Cookulon.Shared
+@using System.Text.Json
+
 @inject NavigationManager navigationManager
+@inject HttpClient Http;
 
 
 @if(loaded == true)
@@ -25,12 +29,7 @@
 else
 {
     <div class="container">
-        <h3>RecipeState Values</h3>
-        <p>@rState.MealTime</p>
-        @foreach(var item in rState.Ingredients)
-        {
-            <p>@item.Description</p>
-        }
+        <p>Loading...</p>
     </div>
 }
 
@@ -40,16 +39,64 @@ else
     private bool loaded = false;
 
     [CascadingParameter]
-    private RecipeState rState { get; set; }
+    private RecipeState? rState { get; set; }
+
+    // JSON Variables
+    private readonly JsonSerializerOptions _jsonOptions = new()
+        {
+            PropertyNameCaseInsensitive = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+        };
 
     protected override void OnInitialized()
     {
         if(rState is null)
         {
             navigationManager.NavigateTo("/", forceLoad: true);
-            return;
-        }
+            return;        }
 
+        if(rState.Ideas.Count < 1)
+        {
+            GetIdeas();
+        }
+        else
+        {
+            loaded = true;
+            ideas = rState.Ideas;
+
+            // Will update the UI when the Async Call comes back completed
+            StateHasChanged();
+        }
+
+    }
+
+    private async void GetIdeas()
+    {
+        string baseuri = "Recipe/GetRecipeIdeas";
+        loaded = false;
+
+        RecipeParms recipeParms = new RecipeParms()
+            {
+                MealTime = rState.MealTime,
+                Ingredients = rState.Ingredients
+
+            };
+
+        // Call Web Api Controller
+        try
+        {
+            HttpResponseMessage response = await Http.PostAsJsonAsync(baseuri, recipeParms, _jsonOptions);
+
+            response.EnsureSuccessStatusCode();
+
+            ideas = (await response.Content.ReadFromJsonAsync<List<Idea>>())!;
+        }
+        catch (Exception)
+        {
+            
+            throw;
+        }
 
     }
 }

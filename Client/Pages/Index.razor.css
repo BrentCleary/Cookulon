@@ -1,8 +1,4 @@
 ﻿.page {
-    background-image: url('images/cookingrobotwithpot.png');
-    background-repeat: no-repeat;
-    background-position: right;
-    background-size: contain;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -43,4 +39,8 @@ a:visited{
 
 a:hover{
     cursor:pointer;
+}
+
+.img{
+    
 }

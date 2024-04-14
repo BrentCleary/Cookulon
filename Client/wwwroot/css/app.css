@@ -1,5 +1,5 @@
 html, body {
-    font-family: 'Monsterrat', Helvetica, sans-serif;
+    font-family: 'Oswald', sans-serif;
     height: 100%;
     font-size: 1rem;
 }
@@ -16,7 +16,7 @@ body{
 }
 
 .h1, h2, h3, h4, h5, h6 {
-    font-family: 'Stattliches', sans-serif;
+    font-family: Roboto, sans-serif;
 }
 
 h1:focus {
