@@ -1,4 +1,4 @@
-﻿@page "/mealRecipe"
+﻿@page "/mealRecipe/{Index:int}"
 @using Cookulon.Shared
 @using System.Text.Json
 
@@ -7,10 +7,26 @@
 
 <div class="container mt-5">
 
-    <h1>Meal Time</h1>
+    <h1>Meal Recipe</h1>
+    <p> Idea Index = @Index </p>
+    <p> Recipe tile = @title</p>
 
 </div>
 
 @code {
+
+    [CascadingParameter]
+    private RecipeState? recipeState { get; set; }
+
+    // Incoming Index of Meal Recipe from recipeIdeas
+    [Parameter]
+    public int Index { get; set; }
+
+    private string title;
+
+    protected override void OnInitialized()
+    {
+        title = recipeState.Ideas.FirstOrDefault(i => i.Index == Index).Title;
+    }
 
 }
