@@ -54,7 +54,8 @@ else
         if(rState is null)
         {
             navigationManager.NavigateTo("/", forceLoad: true);
-            return;        }
+            return;
+        }
 
         if(rState.Ideas.Count < 1)
         {
@@ -102,5 +103,10 @@ else
 
         }
 
+    }
+
+    private void GetRecipe(int index)
+    {
+        navigationManager.NavigateTo("/mealRecipe");
     }
 }
