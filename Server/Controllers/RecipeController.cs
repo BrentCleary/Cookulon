@@ -18,6 +18,8 @@ namespace Cookulon.Server.Controllers
             _openAIservice = openAIservice;
         }
 
+
+        // GET RECIPE IDEAS
         [HttpPost, Route("GetRecipeIdeas")]
         public async Task<ActionResult<List<Idea>>> GetRecipeIdeas(RecipeParms recipeParms)
         {
@@ -28,17 +30,33 @@ namespace Cookulon.Server.Controllers
                                                   .Select(i => i.Description!)
                                                   .ToList();
 
-            if(string.IsNullOrEmpty(mealTime))
+            if (string.IsNullOrEmpty(mealTime))
             {
                 mealTime = "Breakfast";
             }
-            
+
             var ideas = await _openAIservice.CreateRecipeIdeas(mealTime, ingredients);
 
             return ideas;
 
             //return SampleData.RecipeIdeas;
 
+        }
+
+
+        // POST RECIPE
+        [HttpPost, Route("GetRecipe")]
+        public async Task<ActionResult<Recipe?>> GetRecipe(RecipeParms recipeParms)
+        {
+            return SampleData.Recipe;
+        }
+
+
+        // GET 
+        [HttpGet, Route("GetRecipeImage")]
+        public async Task<RecipeImage> GetRecipeImage(string title)
+        {
+            return SampleData.RecipeImage;
         }
 
     }
