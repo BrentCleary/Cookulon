@@ -12,19 +12,31 @@
 
         <div class="d-flex flex-column flex-lg-row justify-content-start">
             <div class="text-center text-lg-start">
-                <img class="rounded-3"/>
+                <img src="@recipeImageUrl" class="rounded-3 recipeImage"/>
             </div>
             <div class="flex-grow-1 px-3">
-                <h1 class="fw-bold">@title</h1>
-                <p>Description Goes Here</p>
+                <h1 class="fw-bold">@recipe.Title</h1>
+                <p>@recipe.Summary</p>
             </div>
         </div>
         <div class="row row-cols-1 row-cols-md-2">
-            <div class="colandingPage mt-3">
+            <div class="col mt-3">
                 <h2>Ingredients</h2>
+                <ul>
+                    @foreach(var item in recipe.Ingredients)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
             </div>
-            <div class="col">
+            <div class="col mt-3">
                 <h2>Instructions</h2>
+                <ul>
+                    @foreach (var item in recipe.Instructions)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
             </div>
         </div>
     </div>

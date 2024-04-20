@@ -14,6 +14,7 @@ namespace Cookulon.Server.Services
         private static readonly HttpClient _httpClient = new();
         private readonly JsonSerializerOptions _jsonOptions;
 
+
         // build the function objects so the AI will return JSON formatted object
         private static ChatFunction.Parameter _recipeIdeaParameter = new()
         {
@@ -63,6 +64,53 @@ namespace Cookulon.Server.Services
                 }
             }
         };
+
+        private static ChatFunction.Parameter _recipeParameter = new()
+        {
+            Type = "object",
+            Description = "The recipe to display",
+            Required = new[] { "title", "ingredients", "instructions", "summary" },
+            Properties = new
+            {
+                Title = new
+                {
+                    Type = "string",
+                    Description = "The title of the recipe to display",
+                },
+                Ingredients = new
+                {
+                    Type = "array",
+                    Description = "An array of all the ingredients mentioned in the recipe instructions",
+                    Items = new { Type = "string" }
+                },
+                Instructions = new
+                {
+                    Type = "array",
+                    Description = "An array of each step for cooking this recipe",
+                    Items = new { Type = "string" }
+                },
+                Summary = new
+                {
+                    Type = "string",
+                    Description = "A summary description of what this recipe creates",
+                },
+            },
+        };
+
+        private static ChatFunction _recipeFunction = new()
+        {
+            Name = "DisplayRecipe",
+            Description = "Displays the recipe from the parameter to the user",
+            Parameters = new
+            {
+                Type = "object",
+                Properties = new
+                {
+                    Data = _recipeParameter
+                },
+            }
+        };
+
 
 
         public OpenAIService(IConfiguration configuration)
@@ -123,11 +171,6 @@ namespace Cookulon.Server.Services
 
             HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(url, request, _jsonOptions);
 
-
-
- // ----------------- HERE IS THE FUNCTION TO DEBUG --------------------------- FIXHERE
-            //API RESPONSE IS SAYING UNAUTHORIZED
-
             ChatResponse? response = await httpResponse.Content.ReadFromJsonAsync<ChatResponse>();
 
 
@@ -156,6 +199,68 @@ namespace Cookulon.Server.Services
             }
 
             return ideasResult?.Data ?? new List<Idea>();
+        }
+
+        public async Task<Recipe?> CreateRecipe(string title, List<string> ingredients)
+        {
+            // build out URL
+            string url = $"{_baseUrl}/chat/completions";
+            // how do we want the system to respond (What role to play)
+            string systemPrompt = "You are a world-renowned chef. Create the recipe with ingredients, isntructions and a summary.";
+            // what the user can tell the ai to do
+            string userPrompt = $"Create a {title} recipe.";
+
+
+            // fill out variables from models
+            ChatMessage userMessage = new()
+            {
+                Role = "user",
+                Content = $"{systemPrompt} {userPrompt}"
+            };
+
+            ChatRequest request = new()
+            {
+                Model = "gpt-3.5-turbo-0613",
+                Messages = new[] { userMessage },
+                Functions = new[] { _recipeFunction },
+                FunctionCall = new { Name = _recipeFunction.Name }
+
+            };
+
+            // make request with variables
+            HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(url, request, _jsonOptions);
+        
+            // get the response back
+            ChatResponse? response = await httpResponse.Content.ReadFromJsonAsync<ChatResponse>();
+
+            // look at ChatFunctionResponse
+            ChatFunctionResponse? functionResponse = response.Choices?
+                                                             .FirstOrDefault(m => m.Message?.FunctionCall is not null)?
+                                                             .Message?
+                                                             .FunctionCall;
+
+            // pass recipe into the result object
+            Result<Recipe> recipe = new ();
+
+            if (functionResponse?.Arguments is not null)
+            {
+                try
+                {
+                    recipe = JsonSerializer.Deserialize<Result<Recipe>>(functionResponse.Arguments, _jsonOptions);
+                }
+                catch (Exception ex)
+                {
+
+                    recipe = new()
+                    {
+                        Exception = ex,
+                        ErrorMessage = await httpResponse.Content.ReadAsStringAsync()
+                    };
+                }
+            
+            }
+
+            return recipe.Data;
         }
     }
 }
