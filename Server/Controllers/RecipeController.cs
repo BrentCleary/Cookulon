@@ -19,7 +19,7 @@ namespace Cookulon.Server.Controllers
         }
 
 
-        // GET RECIPE IDEAS
+        // POST RECIPE IDEAS
         [HttpPost, Route("GetRecipeIdeas")]
         public async Task<ActionResult<List<Idea>>> GetRecipeIdeas(RecipeParms recipeParms)
         {
@@ -68,12 +68,15 @@ namespace Cookulon.Server.Controllers
         }
 
 
-        // GET 
+        // GET RECIPE IMAGE
         [HttpGet, Route("GetRecipeImage")]
         public async Task<RecipeImage> GetRecipeImage(string title)
         {
-            return SampleData.RecipeImage;
+            //return SampleData.RecipeImage;
 
+            var recipeImage = await _openAIservice.CreateRecipeImage(title);
+
+            return recipeImage ?? SampleData.RecipeImage;
             
         }
 

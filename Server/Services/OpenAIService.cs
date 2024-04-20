@@ -242,6 +242,7 @@ namespace Cookulon.Server.Services
             // pass recipe into the result object
             Result<Recipe> recipe = new ();
 
+            // deserialize arguments from response into a recipe model
             if (functionResponse?.Arguments is not null)
             {
                 try
@@ -260,7 +261,34 @@ namespace Cookulon.Server.Services
             
             }
 
+            //return recipe model Data field
             return recipe.Data;
+        }
+
+        public async Task<RecipeImage?> CreateRecipeImage(string recipeTitle)
+        {
+            string url = $"{_baseUrl}images/generations";
+            string userPrompt = $"Create a restruant product shot for {recipeTitle}";
+
+            ImageGenerationRequest request = new()
+            {
+                Prompt = userPrompt
+            };
+
+            HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(url, request, _jsonOptions);
+
+            RecipeImage? recipeImage = null;
+
+            try
+            {
+                recipeImage = await httpResponse.Content.ReadFromJsonAsync<RecipeImage>();
+            }
+            catch
+            {
+                Console.WriteLine("+_+_+_+_+_+_+_ ERROR: RecipeImage could not be retrieved +_+_+_+_+_+_+_+_");
+            }
+
+            return recipeImage;
         }
     }
 }
