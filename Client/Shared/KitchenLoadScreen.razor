@@ -1,13 +1,52 @@
 ﻿<div class="h-100 d-flex flex-column align-items-center justify-content-center">
     <div class="text-center">
-        <h1>PREPAIRING MEAL...</h1>
-        <img class="rounded-2" src="/images/KitchenPictures/RobotKitchen11.jpg" height="500" />
+        <div class="text-center d-flex align-items-center justify-content-evenly" height="30px">
+            <h1 width="50%">PREPAIRING MEAL...</h1>
+            <div width="50%" height="25">
+                <div class="loader"></div>
+            </div>
+        </div>
+        @* pulls a random picture from the kitchenPictures list *@
+        <img class="rounded-2" src="@kitchenPictures[RandomKitchenPictureIndex(kitchenPictures)]" height="500" />
     </div>
-    <div class="loader">Loading...</div>
+
 </div>
+
+
 @code {
-    // Create a List of Images
-    // Pull from them randomly
-    // Assign the random image as the image src
+
+    // Create a List of image addresses from the root/images/kitchenpictures file
+    private List<string> kitchenPictures = new()
+    {
+        "/images/kitchenpictures/robotkitchen1.jpg",
+        "/images/kitchenpictures/robotkitchen2.jpg",
+        "/images/kitchenpictures/robotkitchen3.jpg",
+        "/images/kitchenpictures/robotkitchen4.jpg",
+        "/images/kitchenpictures/robotkitchen5.jpg",
+        "/images/kitchenpictures/robotkitchen6.jpg",
+        "/images/kitchenpictures/robotkitchen7.jpg",
+        "/images/kitchenpictures/robotkitchen8.jpg",
+        "/images/kitchenpictures/robotkitchen9.jpg",
+        "/images/kitchenpictures/robotkitchen10.jpg",
+        "/images/kitchenpictures/robotkitchen11.jpg",
+        "/images/kitchenpictures/robotkitchen12.jpg",
+        "/images/kitchenpictures/robotkitchen13.jpg"
+    };
+
+    // return a random index number from the list to be the image source
+    private int RandomKitchenPictureIndex(List<string> pictureIndex)
+    {
+        // Initialize Random class
+        Random random = new();
+
+        // Assign the random image as the image src
+        int kitchenPicIndex = random.Next(0, (pictureIndex.Count - 1) );
+
+        return kitchenPicIndex;
+    }
+
+
+
+
 
 }

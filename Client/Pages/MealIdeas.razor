@@ -36,6 +36,9 @@ else
     private List<Idea> ideas = new List<Idea>();
     private bool loaded = false;
 
+    // for detecting if form was submitted without ingredient
+    private bool noSubmission = false;
+
     [CascadingParameter]
     private RecipeState? rState { get; set; }
 
