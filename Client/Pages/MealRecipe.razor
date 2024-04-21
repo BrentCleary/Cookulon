@@ -6,7 +6,7 @@
 @inject HttpClient Http;
 @inject NavigationManager Navigation;
 
-@if(loaded = true)
+@if(loaded == true)
 {
     <div class="container mt-5 h-100">
 
@@ -43,9 +43,7 @@
 }
 else
 {
-    <div class="container">
-        <p>Loading...</p>
-    </div>
+    <KitchenLoadScreen></KitchenLoadScreen>
 }
 
 
@@ -59,16 +57,17 @@ else
     [Parameter]
     public int Index { get; set; }
 
-    private bool loaded = false;
-    private string title;
-    private string recipeImageUrl = string.Empty;
-    private Recipe recipe;
-
     protected override void OnInitialized()
     {
         loaded = false;
         GetRecipe();
     }
+
+    private bool loaded = false;
+    private string? title;
+    private string recipeImageUrl = string.Empty;
+    private Recipe? recipe;
+
 
 
     private async void GetRecipe()
