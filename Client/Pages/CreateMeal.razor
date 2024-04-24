@@ -9,16 +9,17 @@
 
 
 <div class="container mt-5">
-    
+    <div class="row text-center">
+        <h1>Create Your Meal</h1>
+    </div>
     <div class="row">
         <div class="col">
-            <h1>Create Meal</h1>
             <EditForm EditContext="@editcontext">
                 <div class="row gy-2 ">
                 
                     @* Meal Time Select *@
-                    <div class="col-12">
-                        <label class="form-label">Meal Time :</label>
+                    <div class="col-12 mt-3">
+                        <label class="form-label">Choose A Meal Time</label>
                         <InputSelect @bind-Value="meal.mealtime" class="form-select border border-success" placeholder="Pick a meal time">
                             <option value="Breakfast">Breakfast</option>
                             <option value="Lunch">Lunch</option>
@@ -28,16 +29,16 @@
                     </div>
 
                     @* Ingredient Input *@
-                    <div class="col-12">
-                        <label class="form-label">Ingredient:</label>
+                    <div class="col mt-3">
+                        <label class="form-label">Choose Your Ingredients</label>
                         <InputText @bind-Value="meal.ingredient" class="col-12 form-control border border-success mb-2" placeholder="Add Ingredient" mexlength="30"></InputText>
                     </div>
                 </div>
 
                 @* Button Bar *@
-                <div class="col-12">
-                    <button class="btn btn-outline-success text-success" @onclick="AddIngredient">Add</button>
-                    <button class="btn btn-outline-danger text-danger" @onclick="RemoveAll">Clear</button>
+                <div class="col-12 m-1">
+                    <button class="btn btn-outline-success text-success mt-1 me-1" style="width:100px" @onclick="AddIngredient">Add</button>
+                    <button class="btn btn-outline-danger text-danger mt-1 me-1" style="width:100px" @onclick="RemoveAll">Clear</button>
                 </div>
                 <div class="col-12 mt-3">
                     <div class="table-responsive">
@@ -50,14 +51,14 @@
                             <tbody>
                                 @foreach(var item in ingredients)
                                 {
-                                    <tr>
-                                        <td>
-                                            @item.Description
+                                    <tr class="border-1">
+                                        <td class="align-content-center">
+                                            @item.Description.ToUpper()
                                         </td>
-                                        <td class="text-end pe-3">
-                                        <button class="btn btn-outline-danger" @onclick="() => RemoveIngredient(item.Id)"><i class=" bi bi-trash-fill"></i>
-
-                                </button>
+                                        <td class="text-end align-content-center pe-3">
+                                            <button class="btn btn-outline-danger" @onclick="() => RemoveIngredient(item.Id)">
+                                                <i class=" bi bi-trash-fill"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 }
