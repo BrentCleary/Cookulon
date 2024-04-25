@@ -7,13 +7,22 @@
             </div>
         </div>
         @* pulls a random picture from the kitchenPictures list *@
-        <img class="rounded-2" src="@kitchenPictures[RandomKitchenPictureIndex(kitchenPictures)]" height="500" />
+        <img class="kitchen-load-screen-img rounded-2 img-fluid p-3" src="@kitchenPictures[RandomKitchenPictureIndex(kitchenPictures)]"/>
     </div>
 
 </div>
 
 
 @code {
+
+    // Get Files from Kitchen Pics Image Folder and store in an array
+
+    // public string[] GetKitchenImages(string path)
+    // {
+    //     string[] kitchenPics = Directory.GetFiles(path);
+
+    //     return kitchenPics;
+    // }
 
     // Create a List of image addresses from the root/images/kitchenpictures file
     private List<string> kitchenPictures = new()

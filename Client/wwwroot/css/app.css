@@ -82,6 +82,9 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
+
+/* +_+_+_+_+_+_+_+_+_+_+_+_+_+_+_    Loading Progress Bar +_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_ */
+
 .loading-progress {
     position: relative;
     display: block;
@@ -114,6 +117,9 @@ a, .btn-link {
     .loading-progress-text:after {
         content: var(--blazor-load-percentage-text, "Loading");
     }
+
+
+
 
 /* ---------------------------------- 3d button Effects -----------------------------------------*/
 /* source Code */
@@ -265,3 +271,12 @@ a, .btn-link {
             box-shadow: 0 0 0 1px #9a00cd inset, 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 1px 3px 1px rgba(0, 0, 0, 0.3);
             background-color: #bb39d7;
         }
+
+
+
+
+/* +_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_     KitchenLoadScreen Component Img Styling    +_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_ */
+
+.kitchen-load-screen-img{
+    max-height: 600px;
+}

@@ -1,0 +1,50 @@
+﻿<div class="h-100 d-flex flex-column align-items-center justify-content-center">
+    <div class="text-center">
+        <div class="text-center d-flex align-items-center justify-content-evenly" height="30px">
+            <h1 width="50%">PREPAIRING MEAL...</h1>
+            <div width="50%" height="25">
+                <div class="loader"></div>
+            </div>
+        </div>
+    
+        @* pulls a random picture from the kitchenPictures list *@
+        @* <img class="kitchen-load-screen-img rounded-2 img-fluid p-3" src="@kitchenPictures[RandomKitchenPictureIndex(kitchenPictures)]"/> *@
+
+        @* New Method for generating Pictures *@
+        <img class="kitchen-load-screen-img rounded-2 img-fluid p-3" src="@NewRandomKitchenPictureMethod()" />
+
+    </div>
+
+</div>
+
+
+@code {
+
+    private int kitchenPics;
+
+    protected override void OnInitialized()
+    {
+
+        // Return the number of files in the KitchenPictures Folder
+        int kitchenPics = (Directory.GetFiles("C:/Users/Brent/Documents/CoderFoundry/Cookulon/Client/wwwroot/images/KitchenPictures/")).Length;
+
+    }
+    
+
+    private string NewRandomKitchenPictureMethod()
+    {
+        // Initialize Random class
+        Random random = new();
+
+        // Assign an int between the O and the kitchenPics value
+        int kitchenPicIndex = random.Next(0, (kitchenPics - 1));
+
+        string currentKitchenPicture = $"/images/KitchenPictures/RobotKitchen{kitchenPicIndex}.jpg";
+
+        return currentKitchenPicture;
+    }
+
+        // Return the number of files in the KitchenPictures Folder
+        // int kitchenPics = (Directory.GetFiles("~/wwwroot/images/KitchenPictures/")).Length;
+
+}
