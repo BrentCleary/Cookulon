@@ -25,8 +25,14 @@
     protected override void OnInitialized()
     {
 
+        string projectRoot = Directory.GetCurrentDirectory();
+        string folderPath = Path.Combine(projectRoot, "Client/wwwroot/images/KitchenPictures/");
+
+        // For returning and array of folder paths
+        // string[] imagePaths = Directory.GetFiles(folderPath);
+
         // Return the number of files in the KitchenPictures Folder
-        int kitchenPics = (Directory.GetFiles("C:/Users/Brent/Documents/CoderFoundry/Cookulon/Client/wwwroot/images/KitchenPictures/")).Length;
+        kitchenPics = (Directory.GetFiles(folderPath)).Length;
 
     }
     
