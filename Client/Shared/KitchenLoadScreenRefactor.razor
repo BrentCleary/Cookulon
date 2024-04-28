@@ -29,7 +29,7 @@
         string folderPath = Path.Combine(projectRoot, "Client/wwwroot/images/KitchenPictures/");
 
         // For returning and array of folder paths
-        // string[] imagePaths = Directory.GetFiles(folderPath);
+        string[] imagePaths = Directory.GetFiles(folderPath);
 
         // Return the number of files in the KitchenPictures Folder
         kitchenPics = (Directory.GetFiles(folderPath)).Length;
